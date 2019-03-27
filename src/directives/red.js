@@ -5,7 +5,9 @@
 // });
 
 const red = {
-  update (el) {
+  inserted (el) {
+    console.log('dom', el);
     el.style.backgroundColor = 'red';
   }
 };
+export default red;

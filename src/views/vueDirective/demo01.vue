@@ -1,7 +1,7 @@
 <template>
   <div class="directive-demo01">
     <!--自定义指令：实现当进入刚进入页面时，input获得焦点-->
-    <input v-focus:foo="123" type="text" placeholder="请输入内容">
+    <input v-focus:foo="123" v-blue type="text" placeholder="请输入内容">
   </div>
 </template>
 
@@ -36,12 +36,12 @@
           // //   value: 123
           // // }
           // console.log('vnode', vnode)
-          el.focus()
-          el.value = `指令名:${binding.name}`
+          el.focus();
+          el.value = `指令名:${binding.name}`;
         }
       }
     }
-  }
+  };
 </script>
 
 <style lang="scss" scoped>
