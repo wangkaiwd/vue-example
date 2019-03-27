@@ -7,7 +7,9 @@ import store from 'store';
 import 'styles/reset';
 import 'styles/base';
 import './registerServiceWorker';
+import red from './directives/red';
 
+Vue.directive('red', red);
 Vue.use(ElementUI);
 Vue.config.productionTip = false;
 

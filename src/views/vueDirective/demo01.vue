@@ -37,6 +37,7 @@
           // // }
           // console.log('vnode', vnode)
           el.focus()
+          el.value = `指令名:${binding.name}`
         }
       }
     }
