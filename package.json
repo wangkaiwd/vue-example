@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "start": "npm run serve",
+    "start": "yarn run serve",
     "serve": "vue-cli-service serve --project-mode dev",
     "lint": "vue-cli-service lint",
     "build:pro": "vue-cli-service build --project-mode pro",
