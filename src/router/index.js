@@ -20,6 +20,12 @@ export default new Router({
       name: 'directive',
       component: getComponent('vueDirective'),
       meta: { title: '自定义指令' }
+    },
+    {
+      path: '/vuex',
+      name: 'vueX',
+      component: getComponent('vueX'),
+      meta: { title: 'vueX' }
     }
   ]
 });

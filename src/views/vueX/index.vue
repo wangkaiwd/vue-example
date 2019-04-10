@@ -1,5 +1,7 @@
 <template>
-  <div class="vue-x"></div>
+  <div class="vue-x">
+    vueX
+  </div>
 </template>
 
 <script>
@@ -9,7 +11,7 @@
 </script>
 
 <style lang="scss" scoped>
-.vue-x {
+  .vue-x {
 
-}
+  }
 </style>
