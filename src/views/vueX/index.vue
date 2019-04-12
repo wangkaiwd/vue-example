@@ -1,12 +1,16 @@
 <template>
   <div class="vue-x">
-    vueX
+    vueX计数器
+    <vuex-demo01></vuex-demo01>
   </div>
 </template>
 
 <script>
+  import VuexDemo01 from './demo01';
+
   export default {
-    name: 'index'
+    name: 'index',
+    components: { VuexDemo01 }
   };
 </script>
 

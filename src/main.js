@@ -14,7 +14,8 @@ globalRegister(requireComponent, Vue.directive, Vue);
 Vue.use(ElementUI);
 Vue.config.productionTip = false;
 
-new Vue({
+const vm = new Vue({
   router,
   render: h => h(App)
 }).$mount('#app');
+export default vm;
