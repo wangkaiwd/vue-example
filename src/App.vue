@@ -4,7 +4,7 @@
     <el-col>
       <el-card class="content">
         <div slot="header">
-          {{title}} - {{username}}-{{appNameVersion}}
+          {{title}} - {{username}}-{{usernameVersion}}
         </div>
         <router-view></router-view>
       </el-card>
@@ -26,7 +26,7 @@
     },
     computed: {
       ...mapState('users', ['username']),
-      ...mapGetters(['appNameVersion'])
+      ...mapGetters(['usernameVersion'])
     },
     updated () {
       this.title = this.$route.meta.title;
