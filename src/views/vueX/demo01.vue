@@ -1,39 +1,28 @@
 <template>
   <div class="demo-01">
-    <h2 class="count">{{count}}</h2>
-    <button @click="increment">+</button>
-    <button @click="decrement">-</button>
+    <input v-model="username">
   </div>
 </template>
 
 <script>
-  import Vue from 'vue';
-  import Vuex from 'vuex';
+  import { mapMutations } from 'vuex';
 
-  Vue.use(Vuex);
-  const store = new Vuex.Store({
-    state: {
-      count: 0,
-    },
-    mutations: {
-      increment: state => state.count++,
-      decrement: state => state.count--
-    }
-  });
   export default {
     name: 'VuexDemo01',
     computed: {
-      count () {
-        return store.state.count;
+      username: {
+        get () {
+          return this.$store.state.users.username;
+        },
+        set (newVal) {
+          this.switchName(newVal);
+        }
       }
     },
+    mounted () {
+    },
     methods: {
-      increment () {
-        store.commit('increment');
-      },
-      decrement () {
-        store.commit('decrement');
-      }
+      ...mapMutations(['switchName']),
     }
   };
 </script>
