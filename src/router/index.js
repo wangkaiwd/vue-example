@@ -26,6 +26,12 @@ export default new Router({
       name: 'vueX',
       component: getComponent('vueX'),
       meta: { title: 'vueX' }
-    }
+    },
+    {
+      path: '/layout',
+      name: 'layout',
+      component: getComponent('layout'),
+      meta: { title: 'element ui 布局' }
+    },
   ]
 });
