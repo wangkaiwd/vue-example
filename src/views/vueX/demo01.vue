@@ -5,8 +5,9 @@
 </template>
 
 <script>
-  import { mapMutations } from 'vuex';
+  import { createNamespacedHelpers } from 'vuex';
 
+  const { mapMutations } = createNamespacedHelpers('users');
   export default {
     name: 'VuexDemo01',
     computed: {
