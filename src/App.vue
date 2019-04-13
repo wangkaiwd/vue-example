@@ -4,7 +4,7 @@
     <el-col>
       <el-card class="content">
         <div slot="header">
-          {{title}} - {{username}}
+          {{title}} - {{username}}-{{appNameVersion}}
         </div>
         <router-view></router-view>
       </el-card>
@@ -14,7 +14,7 @@
 
 <script>
   import LeftNav from 'layouts/leftNav';
-  import { mapState } from 'vuex';
+  import { mapState, mapGetters } from 'vuex';
 
   export default {
     name: 'App',
@@ -25,9 +25,8 @@
       };
     },
     computed: {
-      ...mapState({
-        username: state => state.users.username
-      })
+      ...mapState('users', ['username']),
+      ...mapGetters(['appNameVersion'])
     },
     updated () {
       this.title = this.$route.meta.title;
