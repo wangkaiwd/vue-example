@@ -4,7 +4,7 @@
 const users = {
   namespaced: true,
   state: {
-    username: '张三',
+    username: JSON.parse(localStorage.getItem('username')) || '张三',
     email: '123@test.com'
   },
   mutations: {
