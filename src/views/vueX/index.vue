@@ -9,7 +9,7 @@
   import VuexDemo01 from './demo01';
 
   export default {
-    name: 'index',
+    name: 'VuexDemo01',
     components: { VuexDemo01 }
   };
 </script>

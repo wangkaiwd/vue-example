@@ -33,5 +33,11 @@ export default new Router({
       component: getComponent('layout'),
       meta: { title: 'element ui 布局' }
     },
+    {
+      path: '/login',
+      name: 'login',
+      component: getComponent('login'),
+      meta: { title: '登录' }
+    },
   ]
 });
