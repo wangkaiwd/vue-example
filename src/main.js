@@ -18,6 +18,15 @@ Vue.config.productionTip = false;
 const vm = new Vue({
   router,
   store,
-  render: h => h(App)
+  render: createElement => createElement('div')
 }).$mount('#app');
 export default vm;
+// render : (createElement) => {
+//  return createElement()
+// }
+// createElement也是一个函数，执行后会返回“虚拟节点(Virtual Node)”,也常简写它为"Vnode" {String | Object | Function}
+
+// createElement的参数：
+// 1. 一个html标签字符串、组件选项对象，或者解析上述任何一种的一个async异步函数。必须参数
+// 2. 一个包含模板相关属性的数据对象，你可以在template中使用这些特性。 可选参数
+// 3. 子虚拟节点(VNodes),由createElement()构建而成，也可以使用字符串来生成"文本虚拟节点"。可选参数
