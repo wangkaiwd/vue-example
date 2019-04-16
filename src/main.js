@@ -18,7 +18,16 @@ Vue.config.productionTip = false;
 const vm = new Vue({
   router,
   store,
-  render: createElement => createElement('div')
+  // render: createElement => createElement('div', [
+  //   '先写一些文字',
+  //   createElement('h2', '一则头条'),
+  //   createElement(App, {
+  //     props: {
+  //       someProp: 'foobar'
+  //     }
+  //   })
+  // ])
+  render: h => h(App)
 }).$mount('#app');
 export default vm;
 // render : (createElement) => {
