@@ -2,12 +2,11 @@
   <el-table
     :data="tableData"
     style="width: 100%">
+    <!--  v-bind:相当于将对象中的每个属性都分别绑定到组件上，相当于rect中的扩展运算符  -->
     <el-table-column
       v-for="item in columns"
-      :prop="item.prop"
-      :label="item.label"
+      v-bind="item"
       :key="item.prop"
-      :width="item.width"
     >
     </el-table-column>
   </el-table>
