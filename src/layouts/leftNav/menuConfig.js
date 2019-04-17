@@ -3,6 +3,7 @@ const menuConfig = [
   { title: 'vue自定义指令', index: '/directive' },
   { title: 'vueX', index: '/vuex' },
   { title: '布局', index: '/layout' },
+  { title: '表格', index: '/table' },
 ];
 
 export default menuConfig;

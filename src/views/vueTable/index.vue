@@ -9,12 +9,14 @@
     </el-table-column>
     <el-table-column
       prop="age"
-      label="年龄">
+      label="年龄"
+      width="180"
+    >
     </el-table-column>
     <el-table-column
       prop="email"
       label="邮箱"
-      width="180">
+    >
     </el-table-column>
   </el-table>
 </template>
@@ -26,7 +28,23 @@
     name: 'index',
     data () {
       return {
-        tableData: data
+        tableData: data.dataSource,
+        columns: [
+          {
+            prop: 'name',
+            label: '姓名',
+            width: '180'
+          },
+          {
+            prop: 'age',
+            label: '年龄',
+            width: '180'
+          },
+          {
+            prop: 'email',
+            label: '邮箱',
+          }
+        ]
       };
     }
   };

@@ -34,6 +34,12 @@ export default new Router({
       meta: { title: 'element ui 布局' }
     },
     {
+      path: '/table',
+      name: 'table',
+      component: getComponent('vueTable'),
+      meta: { title: '表格' }
+    },
+    {
       path: '/login',
       name: 'login',
       component: getComponent('login'),
