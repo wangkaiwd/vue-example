@@ -34,6 +34,7 @@ module.exports = {
       .set('mixins', resolve('mixins'))
       .set('store', resolve('store'))
       .set('layouts', resolve('layouts'))
+      .set('mock', resolve('mock'))
       .end()
       // 扩展名省略
       .extensions
