@@ -1,22 +1,21 @@
 <template>
-  <el-table
-    :data="tableData"
-    style="width: 100%">
-    <!--  v-bind:相当于将对象中的每个属性都分别绑定到组件上，相当于rect中的扩展运算符  -->
-    <el-table-column
-      v-for="item in columns"
-      v-bind="item"
-      :key="item.prop"
+  <div>
+    <el-input></el-input>
+    <edit-table
+      :table-data.sync="tableData"
+      :columns="columns"
     >
-    </el-table-column>
-  </el-table>
+    </edit-table>
+  </div>
 </template>
 
-<script>
+<script type="text/jsx">
   import data from 'mock';
+  import EditTable from 'components/table/editTable';
 
   export default {
-    name: 'index',
+    name: 'TableExample',
+    components: { EditTable },
     data () {
       return {
         tableData: data.dataSource,
@@ -24,7 +23,12 @@
           {
             prop: 'name',
             label: '姓名',
-            width: '180'
+            width: '180',
+            editable: {
+              widget: 'el-input',
+              placeholder: '请输入姓名',
+              style: { width: '80px' }
+            }
           },
           {
             prop: 'age',
@@ -41,6 +45,6 @@
   };
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
 
 </style>
