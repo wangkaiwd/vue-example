@@ -32,7 +32,11 @@
           {
             prop: 'age',
             label: '年龄',
-            width: '180'
+            width: '180',
+            editable: {
+              widget: 'el-input-number',
+              controls: false
+            }
           },
           {
             prop: 'email',

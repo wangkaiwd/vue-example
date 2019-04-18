@@ -21,39 +21,36 @@
     },
     data () {
       return {
-        editColumns: [],
         copyData: JSON.parse(JSON.stringify(this.tableData)),
         editIds: [],
         newValue: ''
       };
     },
+    computed: {
+      editColumns () {
+        return this.generateEditColumns();
+      }
+    },
     mounted () {
-      this.generateEditColumns();
     },
     methods: {
       onInput ({ row, column, index }, newValue) {
-        console.log(newValue);
         this.copyData[index][column.prop] = newValue;
         this.newValue = newValue;
-      },
-      onBlur ({ row, column, index }, e) {
-        // console.log('blur');
-        // this.$emit('update:table-data', this.copyData);
-        // 暴露编辑完成事件，将修改的信息传回
-        // this.$emit('edit-ok', { row, column, index, newValue });
       },
       onClick ({ row, column, index }) {
         const i = this.editIds.indexOf(`${column.prop}_${index}`);
         if (i === -1) {
           return this.editIds.push(`${column.prop}_${index}`);
         }
+        if (!this.newValue && this.newValue !== 0) return this.$message.warning('内容不能为空');
         this.editIds.splice(i, 1);
         this.$emit('update:table-data', this.copyData);
         // 暴露编辑完成事件，将修改的信息传回
         this.$emit('edit-ok', { row, column, index, newValue: this.newValue });
       },
       generateEditColumns () {
-        this.editColumns = this.columns.map(col => {
+        const editColumns = this.columns.map(col => {
           if ('editable' in col) {
             const { widget, ...rest } = col.editable;
             const render = (h, { row, column, index }) => {
@@ -63,22 +60,12 @@
                   {
                     isEditing
                       ?
-                      <el-form-item
-                        prop={`${column.prop}_${index}`}
-                        rules={{
-                          required: true,
-                          message: '域名不能为空',
-                          trigger: 'blur'
-                        }}
+                      <col.editable.widget
+                        value={row[column.prop]}
+                        on-input={this.onInput.bind(this, { row, column, index })}
+                        {...{ attrs: rest }}
                       >
-                        <col.editable.widget
-                          value={row[column.prop]}
-                          on-input={this.onInput.bind(this, { row, column, index })}
-                          on-blur={this.onBlur.bind(this, { row, column, index })}
-                          {...{ attrs: rest }}
-                        >
-                        </col.editable.widget>
-                      </el-form-item>
+                      </col.editable.widget>
                       :
                       <span>{row[column.prop]}</span>
                   }
@@ -96,7 +83,8 @@
           }
           return col;
         });
-      }
+        return editColumns;
+      },
     }
   };
 </script>
