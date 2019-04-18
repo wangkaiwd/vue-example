@@ -1,20 +1,20 @@
 <template>
-  <demo-table
+  <edit-table
     class="demo-table"
     :table-data="copyData"
     :columns="editColumns"
   >
-  </demo-table>
+  </edit-table>
 </template>
 <script type="text/jsx">
-  import DemoTable from './index';
+  import EditTable from './index';
   // 维护数据：
   //   1. 当前的copyData(@input：更新当前data)
   //   2. 原来的tableData(@blur: 更新原来的tableData)
   // 实现的功能：可以在 blur时更新   可以在input时更新  可以在点击保存后更新
   export default {
-    name: 'EditTable',
-    components: { DemoTable },
+    name: 'DemoTable',
+    components: { EditTable },
     props: {
       tableData: {},
       columns: {}

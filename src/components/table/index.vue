@@ -33,7 +33,7 @@
   import TableExpand from './expand';
 
   export default {
-    name: 'DemoTable',
+    name: 'EditTable',
     components: { TableExpand },
     props: {
       columns: {
