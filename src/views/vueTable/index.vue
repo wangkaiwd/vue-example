@@ -1,6 +1,5 @@
 <template>
   <div>
-    <el-input></el-input>
     <edit-table
       :table-data.sync="tableData"
       :columns="columns"
