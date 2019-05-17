@@ -33,13 +33,12 @@
     }
 
     .slider {
-      margin: 0 auto;
       border: 4px solid black;
       overflow: hidden;
     }
 
     .slider-item {
-      width: 400px;
+      width: 200px;
       height: 200px;
       background-color: pink;
       font-size: 80px;
@@ -60,7 +59,6 @@
     .wk-slider-items-wrapper {
       display: flex;
       flex-shrink: 0;
-      transition: all 1s;
     }
   </style>
 </head>
@@ -78,7 +76,7 @@
       constructor(element, options) {
         this.slider = document.querySelector(element);
         this.options = options;
-        this.index = 0;
+        this.index = 1;
         this.initSliderStyle();
         this.autoPlay();
       }
@@ -89,12 +87,23 @@
         this.itemWidth = this.items[0].offsetWidth;
         this.slider.classList.add('wk-slider');
         this.slider.style.width = `${this.itemWidth}px`;
+        this.appendCloneNode();
         this.createItemsWrapper();
       }
-
+      appendCloneNode() {
+        let { items, slider } = this;
+        const first = items[0];
+        const last = items[this.items.length - 1];
+        const firstClone = first.cloneNode(true);
+        const lastClone = last.cloneNode(true);
+        slider.insertBefore(lastClone, first);
+        slider.appendChild(firstClone);
+        this.items = [...this.slider.children];
+      }
       createItemsWrapper() {
         this.itemsWrapper = document.createElement('div');
         this.itemsWrapper.classList.add('wk-slider-items-wrapper');
+        this.itemsWrapper.style.transform = `translateX(${-this.itemWidth}px)`;
         this.slider.appendChild(this.itemsWrapper);
         this.items.map(item => {
           this.itemsWrapper.appendChild(item);
@@ -104,17 +113,41 @@
 
       autoPlay() {
         if (!this.options.autoPlay) return;
+        this.itemsWrapper.style.transition = 'all 1s';
         setInterval(() => {
           this.index++;
+          console.log('index', this.index)
           this.go(this.index);
-        }, 2000);
+        }, 1000);
       }
 
       go(index) {
         const lastIndex = this.items.length - 1;
-        if (index > lastIndex) { this.index = 0; }
-        if (index < 0) { this.index = lastIndex; }
-        this.itemsWrapper.style.transform = `translateX(${-this.itemWidth * this.index}px)`;
+        const { itemsWrapper, itemWidth } = this;
+        if (index > lastIndex) { this.lastToFirst(index); }
+        if (index < 0) { this.firstToLast(index, lastIndex); }
+        itemsWrapper.style.transform = `translateX(${-itemWidth * index}px)`;
+      }
+      lastToFirst(index) {
+        const { itemsWrapper, itemWidth } = this;
+        itemsWrapper.style.transition = 'none';
+        index = 1;
+        itemsWrapper.style.transform = `translateX(${-itemWidth * index}px)`;
+        index++;
+        itemsWrapper.offsetWidth;
+        itemsWrapper.style.transition = 'all 1s';
+        console.log('index', index)
+        this.index = index;
+      }
+      firstToLast(index, lastIndex) {
+        const { itemsWrapper, itemWidth } = this;
+        itemsWrapper.style.transition = 'none';
+        index = lastIndex - 1;
+        itemsWrapper.style.transform = `translateX(${-itemWidth * index}px)`;
+        index--;
+        itemsWrapper.offsetWidth;
+        itemsWrapper.style.transition = 'all 1s';
+        this.index = index;
       }
     }
 
