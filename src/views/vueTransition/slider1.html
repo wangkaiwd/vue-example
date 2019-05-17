@@ -116,7 +116,6 @@
         this.itemsWrapper.style.transition = 'all 1s';
         setInterval(() => {
           this.index++;
-          console.log('index', this.index)
           this.go(this.index);
         }, 1000);
       }
@@ -136,7 +135,6 @@
         index++;
         itemsWrapper.offsetWidth;
         itemsWrapper.style.transition = 'all 1s';
-        console.log('index', index)
         this.index = index;
       }
       firstToLast(index, lastIndex) {
