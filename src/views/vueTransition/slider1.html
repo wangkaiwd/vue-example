@@ -64,93 +64,102 @@
 </head>
 
 <body>
-  <div class="demo-wrapper">
-    <div class="slider">
-      <div class="slider-item">1</div>
-      <div class="slider-item">2</div>
-      <div class="slider-item">3</div>
-    </div>
+<div class="demo-wrapper">
+  <div class="slider">
+    <div class="slider-item">1</div>
+    <div class="slider-item">2</div>
+    <div class="slider-item">3</div>
   </div>
-  <script>
-    class Slider {
-      constructor(element, options) {
-        this.slider = document.querySelector(element);
-        this.options = options;
-        this.index = 1;
-        this.initSliderStyle();
-        this.autoPlay();
-      }
-
-      initSliderStyle() {
-        this.items = [...this.slider.children];
-        // 这里获取宽度时要小心异步加载
-        this.itemWidth = this.items[0].offsetWidth;
-        this.slider.classList.add('wk-slider');
-        this.slider.style.width = `${this.itemWidth}px`;
-        this.appendCloneNode();
-        this.createItemsWrapper();
-      }
-      appendCloneNode() {
-        let { items, slider } = this;
-        const first = items[0];
-        const last = items[this.items.length - 1];
-        const firstClone = first.cloneNode(true);
-        const lastClone = last.cloneNode(true);
-        slider.insertBefore(lastClone, first);
-        slider.appendChild(firstClone);
-        this.items = [...this.slider.children];
-      }
-      createItemsWrapper() {
-        this.itemsWrapper = document.createElement('div');
-        this.itemsWrapper.classList.add('wk-slider-items-wrapper');
-        this.itemsWrapper.style.transform = `translateX(${-this.itemWidth}px)`;
-        this.slider.appendChild(this.itemsWrapper);
-        this.items.map(item => {
-          this.itemsWrapper.appendChild(item);
-          item.classList.add('wk-slider-item');
-        });
-      }
-
-      autoPlay() {
-        if (!this.options.autoPlay) return;
-        this.itemsWrapper.style.transition = 'all 1s';
-        setInterval(() => {
-          this.index++;
-          this.go(this.index);
-        }, 1000);
-      }
-
-      go(index) {
-        const lastIndex = this.items.length - 1;
-        const { itemsWrapper, itemWidth } = this;
-        if (index > lastIndex) { this.lastToFirst(index); }
-        if (index < 0) { this.firstToLast(index, lastIndex); }
-        itemsWrapper.style.transform = `translateX(${-itemWidth * index}px)`;
-      }
-      lastToFirst(index) {
-        const { itemsWrapper, itemWidth } = this;
-        itemsWrapper.style.transition = 'none';
-        index = 1;
-        itemsWrapper.style.transform = `translateX(${-itemWidth * index}px)`;
-        index++;
-        itemsWrapper.offsetWidth;
-        itemsWrapper.style.transition = 'all 1s';
-        this.index = index;
-      }
-      firstToLast(index, lastIndex) {
-        const { itemsWrapper, itemWidth } = this;
-        itemsWrapper.style.transition = 'none';
-        index = lastIndex - 1;
-        itemsWrapper.style.transform = `translateX(${-itemWidth * index}px)`;
-        index--;
-        itemsWrapper.offsetWidth;
-        itemsWrapper.style.transition = 'all 1s';
-        this.index = index;
-      }
+</div>
+<script>
+  class Slider {
+    constructor (element, options) {
+      this.slider = document.querySelector(element);
+      this.options = options;
+      this.index = 1;
+      this.initSliderStyle();
+      this.autoPlay();
     }
 
-    const slider = new Slider('.slider', { autoPlay: true });
-  </script>
+    initSliderStyle () {
+      this.items = [...this.slider.children];
+      // 这里获取宽度时要小心异步加载
+      this.itemWidth = this.items[0].offsetWidth;
+      this.slider.classList.add('wk-slider');
+      this.slider.style.width = `${this.itemWidth}px`;
+      this.appendCloneNode();
+      this.createItemsWrapper();
+    }
+
+    appendCloneNode () {
+      let { items, slider } = this;
+      const first = items[0];
+      const last = items[this.items.length - 1];
+      const firstClone = first.cloneNode(true);
+      const lastClone = last.cloneNode(true);
+      slider.insertBefore(lastClone, first);
+      slider.appendChild(firstClone);
+      this.items = [...this.slider.children];
+    }
+
+    createItemsWrapper () {
+      this.itemsWrapper = document.createElement('div');
+      this.itemsWrapper.classList.add('wk-slider-items-wrapper');
+      this.itemsWrapper.style.transform = `translateX(${-this.itemWidth}px)`;
+      this.slider.appendChild(this.itemsWrapper);
+      this.items.map(item => {
+        this.itemsWrapper.appendChild(item);
+        item.classList.add('wk-slider-item');
+      });
+    }
+
+    autoPlay () {
+      if (!this.options.autoPlay) return;
+      this.itemsWrapper.style.transition = 'all 1s';
+      setInterval(() => {
+        this.index++;
+        this.go();
+      }, 1000);
+    }
+
+    go () {
+      const lastIndex = this.items.length - 1;
+      const { itemsWrapper, itemWidth } = this;
+      if (this.index > lastIndex) { this.lastToFirst(); }
+      if (this.index < 0) { this.firstToLast(lastIndex); }
+      itemsWrapper.style.transform = `translateX(${-itemWidth * this.index}px)`;
+    }
+
+    lastToFirst () {
+      const { itemsWrapper, itemWidth } = this;
+      itemsWrapper.style.transition = 'none';
+      this.index = 1;
+      itemsWrapper.style.transform = `translateX(${-itemWidth * this.index}px)`;
+      this.index++;
+      // DOM变动和样式变动，都会触发重新渲染。但是，浏览器比较智能，会尽量把所有的变动集中在一起，排成一个队列
+      // 然后一次性执行，尽量避免多次重新渲染
+      // keywords:browser force reflow
+      // article recommend:
+      //  1. What forces layout / reflow:https://gist.github.com/paulirish/5d52fb081b3570c81e3a
+      //  2. Force browser to trigger reflow while changing CSS:https://stackoverflow.com/questions/21664940/force-browser-to-trigger-reflow-while-changing-css
+      //  3. 网页性能管理详解：https://www.ruanyifeng.com/blog/2015/09/web-page-performance-in-depth.html
+      itemsWrapper.offsetWidth;
+      itemsWrapper.style.transition = 'all 1s';
+    }
+
+    firstToLast (lastIndex) {
+      const { itemsWrapper, itemWidth } = this;
+      itemsWrapper.style.transition = 'none';
+      this.index = lastIndex - 1;
+      itemsWrapper.style.transform = `translateX(${-itemWidth * this.index}px)`;
+      this.index--;
+      itemsWrapper.offsetWidth;
+      itemsWrapper.style.transition = 'all 1s';
+    }
+  }
+
+  const slider = new Slider('.slider', { autoPlay: true });
+</script>
 </body>
 
 </html>
