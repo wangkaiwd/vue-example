@@ -66,60 +66,60 @@
 </head>
 
 <body>
-  <div class="demo-wrapper">
-    <div class="slider">
-      <div class="slider-item">1</div>
-      <div class="slider-item">2</div>
-      <div class="slider-item">3</div>
-    </div>
+<div class="demo-wrapper">
+  <div class="slider">
+    <div class="slider-item">1</div>
+    <div class="slider-item">2</div>
+    <div class="slider-item">3</div>
   </div>
-  <script>
-    class Slider {
-      constructor(element, options) {
-        this.slider = document.querySelector(element);
-        this.options = options;
-        this.index = 0;
-        this.initSliderStyle();
-        this.autoPlay();
-      }
-
-      initSliderStyle() {
-        this.items = [...this.slider.children];
-        // 这里获取宽度时要小心异步加载
-        this.itemWidth = this.items[0].offsetWidth;
-        this.slider.classList.add('wk-slider');
-        this.slider.style.width = `${this.itemWidth}px`;
-        this.createItemsWrapper();
-      }
-
-      createItemsWrapper() {
-        this.itemsWrapper = document.createElement('div');
-        this.itemsWrapper.classList.add('wk-slider-items-wrapper');
-        this.slider.appendChild(this.itemsWrapper);
-        this.items.map(item => {
-          this.itemsWrapper.appendChild(item);
-          item.classList.add('wk-slider-item');
-        });
-      }
-
-      autoPlay() {
-        if (!this.options.autoPlay) return;
-        setInterval(() => {
-          this.index++;
-          this.go(this.index);
-        }, 2000);
-      }
-
-      go(index) {
-        const lastIndex = this.items.length - 1;
-        if (index > lastIndex) { this.index = 0; }
-        if (index < 0) { this.index = lastIndex; }
-        this.itemsWrapper.style.transform = `translateX(${-this.itemWidth * this.index}px)`;
-      }
+</div>
+<script>
+  class Slider {
+    constructor (element, options) {
+      this.slider = document.querySelector(element);
+      this.options = options;
+      this.index = 0;
+      this.initSliderStyle();
+      this.autoPlay();
     }
 
-    const slider = new Slider('.slider', { autoPlay: true });
-  </script>
+    initSliderStyle () {
+      this.items = [...this.slider.children];
+      // 这里获取宽度时要小心异步加载
+      this.itemWidth = this.items[0].offsetWidth;
+      this.slider.classList.add('wk-slider');
+      this.slider.style.width = `${this.itemWidth}px`;
+      this.createItemsWrapper();
+    }
+
+    createItemsWrapper () {
+      this.itemsWrapper = document.createElement('div');
+      this.itemsWrapper.classList.add('wk-slider-items-wrapper');
+      this.slider.appendChild(this.itemsWrapper);
+      this.items.map(item => {
+        this.itemsWrapper.appendChild(item);
+        item.classList.add('wk-slider-item');
+      });
+    }
+
+    autoPlay () {
+      if (!this.options.autoPlay) return;
+      setInterval(() => {
+        this.index++;
+        this.go(this.index);
+      }, 2000);
+    }
+
+    go (index) {
+      const lastIndex = this.items.length - 1;
+      if (index > lastIndex) { this.index = 0; }
+      if (index < 0) { this.index = lastIndex; }
+      this.itemsWrapper.style.transform = `translateX(${-this.itemWidth * this.index}px)`;
+    }
+  }
+
+  const slider = new Slider('.slider', { autoPlay: true });
+</script>
 </body>
 
 </html>

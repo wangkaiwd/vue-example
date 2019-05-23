@@ -38,7 +38,7 @@
     }
 
     .slider-item {
-      width: 200px;
+      width: 400px;
       height: 200px;
       background-color: pink;
       font-size: 80px;
@@ -49,6 +49,7 @@
 
     /*组件样式*/
     .wk-slider {
+      position: relative;
       display: flex;
     }
 
@@ -59,6 +60,27 @@
     .wk-slider-items-wrapper {
       display: flex;
       flex-shrink: 0;
+    }
+    .wk-slider-arrows {
+      cursor: pointer;
+      user-select: none;
+      color: rgba(0, 0, 0, .6);
+    }
+    .wk-slider-arrow-left,
+    .wk-slider-arrow-right {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+    }
+    .wk-slider-arrow-left:hover,
+    .wk-slider-arrow-right:hover {
+      color: #fff;
+    }
+    .wk-slider-arrow-left {
+      left: 10px;
+    }
+    .wk-slider-arrow-right {
+      right: 10px;
     }
   </style>
 </head>
@@ -89,6 +111,7 @@
       this.slider.style.width = `${this.itemWidth}px`;
       this.appendCloneNode();
       this.createItemsWrapper();
+      this.createArrows();
     }
 
     appendCloneNode () {
@@ -103,14 +126,34 @@
     }
 
     createItemsWrapper () {
-      this.itemsWrapper = document.createElement('div');
-      this.itemsWrapper.classList.add('wk-slider-items-wrapper');
+      this.itemsWrapper = this.createAndAddClass('div', 'wk-slider-items-wrapper');
       this.itemsWrapper.style.transform = `translateX(${-this.itemWidth}px)`;
       this.slider.appendChild(this.itemsWrapper);
       this.items.map(item => {
         this.itemsWrapper.appendChild(item);
         item.classList.add('wk-slider-item');
       });
+    }
+
+    createArrows () {
+      const arrows = this.createAndAddClass('div', 'wk-slider-arrows');
+      const leftArrow = this.createAndAddClass('span', 'wk-slider-arrow-left');
+      leftArrow.innerText = '<';
+      const rightArrow = this.createAndAddClass('span', 'wk-slider-arrow-right');
+      rightArrow.innerText = '>';
+      arrows.appendChild(leftArrow);
+      arrows.appendChild(rightArrow);
+      this.slider.appendChild(arrows);
+    }
+
+    createAndAddClass (tag, className) {
+      const itemsWrapper = document.createElement(tag);
+      itemsWrapper.classList.add(className);
+      return itemsWrapper;
+    }
+
+    createControls () {
+
     }
 
     autoPlay () {
