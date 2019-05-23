@@ -123,6 +123,8 @@
       this.slider = document.querySelector(element);
       this.options = options;
       this.index = 1;
+      this.timer = null;
+      this.transition = 'all 1s';
       this.initSliderStyle();
       this.autoPlay();
     }
@@ -164,6 +166,10 @@
     bindEvents () {
       this.handleArrows();
       this.handleControls();
+      this.pause();
+      this.slider.addEventListener('mouseleave', () => {
+        this.autoPlay();
+      });
     }
 
     handleArrows () {
@@ -218,11 +224,18 @@
 
     autoPlay () {
       if (!this.options.autoPlay) return;
-      this.itemsWrapper.style.transition = 'all 1s';
-      setInterval(() => {
+      this.itemsWrapper.style.transition = this.transition;
+      this.timer = setInterval(() => {
         this.index++;
         this.go();
-      }, 2000);
+      }, this.options.duration || 2000);
+    }
+
+    pause () {
+      this.slider.addEventListener('mouseenter', () => {
+        clearInterval(this.timer);
+        this.timer = null;
+      });
     }
 
     activeControl () {
@@ -239,8 +252,8 @@
       let controlIndex = null;
       if (this.index === itemsLength - 1 || this.index === 1) {
         controlIndex = 0;
-      } else {
-        controlIndex = this.index - 1;
+      } else if (this.index === 0) {
+        controlIndex = this.ul.children.length - 1;
       }
       return controlIndex;
     }
@@ -277,7 +290,7 @@
       //  2. Force browser to trigger reflow while changing CSS:https://stackoverflow.com/questions/21664940/force-browser-to-trigger-reflow-while-changing-css
       //  3. 网页性能管理详解：https://www.ruanyifeng.com/blog/2015/09/web-page-performance-in-depth.html
       itemsWrapper.offsetWidth;
-      itemsWrapper.style.transition = 'all 1s';
+      itemsWrapper.style.transition = this.transition;
     }
 
     firstToLast (lastIndex) {
@@ -287,7 +300,7 @@
       itemsWrapper.style.transform = `translateX(${-itemWidth * this.index}px)`;
       this.index--;
       itemsWrapper.offsetWidth;
-      itemsWrapper.style.transition = 'all 1s';
+      itemsWrapper.style.transition = this.transition;
     }
   }
 
