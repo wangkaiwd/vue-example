@@ -18,7 +18,9 @@
     *::before {
       box-sizing: inherit;
     }
-
+    ul li {
+      list-style: none;
+    }
     /*
       通配符的css权重是最低的，html的标签都会继承box-sizing
       并且对应元素进行盒模型更改的时候，对应的子元素也会更改
@@ -82,6 +84,28 @@
     .wk-slider-arrow-right {
       right: 10px;
     }
+    .wk-slider-controls {
+      display: flex;
+      position: absolute;
+      bottom: 10px;
+      left: 50%;
+      transform: translateX(-50%);
+    }
+    .wk-slider-control-item {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 12px;
+      width: 16px;
+      height: 16px;
+      border-radius: 50%;
+      background-color: red;
+      margin: 0 4px;
+      cursor: pointer;
+    }
+    .wk-slider-control-item.active {
+      background-color: #fff;
+    }
   </style>
 </head>
 
@@ -112,6 +136,8 @@
       this.appendCloneNode();
       this.createItemsWrapper();
       this.createArrows();
+      this.createControls();
+      this.bindEvents();
     }
 
     appendCloneNode () {
@@ -135,25 +161,59 @@
       });
     }
 
+    bindEvents () {
+      this.handleArrows();
+      this.handleControls();
+    }
+
+    handleArrows () {
+      this.leftArrow.addEventListener('click', () => {
+        this.index--;
+        this.go();
+      });
+      this.rightArrow.addEventListener('click', () => {
+        this.index++;
+        this.go();
+      });
+    }
+
+    handleControls () {
+      const controls = Array.from(this.ul.children);
+      for (let i = 0; i < controls.length; i++) {
+        controls[i].addEventListener('click', () => {
+          this.calcSliderIndex(i);
+          this.go();
+        });
+      }
+    }
+
     createArrows () {
       const arrows = this.createAndAddClass('div', 'wk-slider-arrows');
-      const leftArrow = this.createAndAddClass('span', 'wk-slider-arrow-left');
-      leftArrow.innerText = '<';
-      const rightArrow = this.createAndAddClass('span', 'wk-slider-arrow-right');
-      rightArrow.innerText = '>';
-      arrows.appendChild(leftArrow);
-      arrows.appendChild(rightArrow);
+      this.leftArrow = this.createAndAddClass('span', 'wk-slider-arrow-left');
+      this.leftArrow.innerText = '<';
+      this.rightArrow = this.createAndAddClass('span', 'wk-slider-arrow-right');
+      this.rightArrow.innerText = '>';
+      arrows.appendChild(this.leftArrow);
+      arrows.appendChild(this.rightArrow);
       this.slider.appendChild(arrows);
     }
 
     createAndAddClass (tag, className) {
-      const itemsWrapper = document.createElement(tag);
-      itemsWrapper.classList.add(className);
-      return itemsWrapper;
+      const element = document.createElement(tag);
+      element.classList.add(className);
+      return element;
     }
 
     createControls () {
-
+      const len = this.items.length - 2;
+      this.ul = this.createAndAddClass('ul', 'wk-slider-controls');
+      for (let i = 0; i < len; i++) {
+        const li = this.createAndAddClass('li', 'wk-slider-control-item');
+        li.innerText = i + 1;
+        this.ul.appendChild(li);
+      }
+      this.slider.appendChild(this.ul);
+      this.activeControl();
     }
 
     autoPlay () {
@@ -162,7 +222,36 @@
       setInterval(() => {
         this.index++;
         this.go();
-      }, 1000);
+      }, 2000);
+    }
+
+    activeControl () {
+      const lis = Array.from(this.ul.children);
+      const controlIndex = this.calcControlIndex();
+      for (let i = 0; i < lis.length; i++) {
+        lis[i].classList.remove('active');
+      }
+      lis[controlIndex].classList.add('active');
+    }
+
+    calcControlIndex () {
+      const itemsLength = this.items.length;
+      let controlIndex = null;
+      if (this.index === itemsLength - 1 || this.index === 1) {
+        controlIndex = 0;
+      } else {
+        controlIndex = this.index - 1;
+      }
+      return controlIndex;
+    }
+
+    calcSliderIndex (i) {
+      const itemsLength = this.items.length;
+      if (i === 0) {
+        this.index = itemsLength - 1;
+      } else {
+        this.index = i + 1;
+      }
     }
 
     go () {
@@ -171,6 +260,7 @@
       if (this.index > lastIndex) { this.lastToFirst(); }
       if (this.index < 0) { this.firstToLast(lastIndex); }
       itemsWrapper.style.transform = `translateX(${-itemWidth * this.index}px)`;
+      this.activeControl();
     }
 
     lastToFirst () {
