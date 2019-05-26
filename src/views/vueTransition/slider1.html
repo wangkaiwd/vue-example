@@ -115,6 +115,7 @@
     <div class="slider-item">1</div>
     <div class="slider-item">2</div>
     <div class="slider-item">3</div>
+    <div class="slider-item">4</div>
   </div>
 </div>
 <script>
@@ -225,6 +226,7 @@
     autoPlay () {
       if (!this.options.autoPlay) return;
       this.itemsWrapper.style.transition = this.transition;
+      if (this.timer) return;
       this.timer = setInterval(() => {
         this.index++;
         this.go();
@@ -254,14 +256,15 @@
         controlIndex = 0;
       } else if (this.index === 0) {
         controlIndex = this.ul.children.length - 1;
+      } else {
+        controlIndex = this.index - 1;
       }
       return controlIndex;
     }
 
     calcSliderIndex (i) {
-      const itemsLength = this.items.length;
       if (i === 0) {
-        this.index = itemsLength - 1;
+        this.index = 1;
       } else {
         this.index = i + 1;
       }
